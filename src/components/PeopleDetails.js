@@ -53,7 +53,7 @@ const PeopleDetails = ({person}) => {
           <li>Birth year: {person["birth_year"]}</li>
           <li>Gender: {person.gender}</li>
 
-          <button onClick={toggleShowMore}>{showMore ? "Show less" : "show more"}</button>
+          <button className='show-more-btn' onClick={toggleShowMore}>{showMore ? "Show less" : "show more"}</button>
           {showMore ? 
           <>
             <h4>Homeworld</h4>

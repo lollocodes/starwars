@@ -1,5 +1,6 @@
 import './App.css';
-import {useState, useEffect } from 'react';
+import './Header.css';
+import Header from "./components/Header";
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,48 +16,18 @@ import VehiclesPage from './pages/VehiclesPage';
 import SpeciesPage from './pages/SpeciesPage'
 
 function App() {
-  const [films, setFilms] = useState([])
-  const [people, setPeople] = useState([]);
-  const [planets, setPlanets] = useState([]);
-  const [starships, setStarships] = useState([]);
-  const [vehicles, setVehicles] = useState([]);
-  const [species, setSpecies] = useState([]);
-
-  const endPointLookupURL = endPoint => {
-    return `https://swapi.dev/api/${endPoint}/?page`
-  }
-
-  function fetchJson(url) {
-    return fetch(url).then(resp => resp.json());
-  }
-
-  function findDataUrl(endPoint) {
-    let url = endPointLookupURL(endPoint);
-    return fetchJson(url)
-  }
-
-  useEffect(() => {
-    fetchData("films").then(resFilms => setFilms(resFilms.results))
-    fetchData("people").then(resPeople => setPeople(resPeople.results))
-    fetchData("planets").then(resPlanets => setPlanets(resPlanets.results))
-    fetchData("starships").then(resStarships => setStarships(resStarships.results))
-    fetchData("vehicles").then(resVehicles => setVehicles(resVehicles.results))
-    fetchData("species").then(resSpecies => setSpecies(resSpecies.results))
-  }, [])
-
- const fetchData = async (endPoint) => {
-      const response = await findDataUrl(endPoint);
-      console.log(response);
-      return response;
-  }
+  
+const scrollToTop = () => {
+  window.scrollTo(0, 0)
+}
 
   return (
     <div className="App">
       
       <Router>
         <div>
-        <div className='hero fade-in-image'></div>
-          <nav>
+        <div className='hero fade-in-image'><Header /></div>
+          <nav className='main-nav'>
             <ul className='nav-list'>
               <li className='list-item'>
                 <Link to="/">Films</Link>
@@ -82,28 +53,29 @@ function App() {
           <div className="main-container">
           <Switch>
             <Route path="/people">
-              <PeoplePage data={people} />
+              <PeoplePage />
             </Route>
             <Route path="/planets">
-              <PlanetsPage data={planets} />
+              <PlanetsPage />
             </Route>
             <Route path="/starships">
-              <StarshipsPage data={starships} />
+              <StarshipsPage />
             </Route>
             <Route path="/vehicles">
-              <VehiclesPage data={vehicles} />
+              <VehiclesPage />
             </Route>
             <Route path="/species">
-              <SpeciesPage data={species} />
+              <SpeciesPage />
             </Route>
             <Route path="/">
-              <HomePage data={films} />
+              <HomePage />
             </Route>
           </Switch>
           </div>
         </div>
       </Router>
 
+            <button className='scroll-to-top' onClick={scrollToTop}>Scroll up</button>
     </div>
   );
 }

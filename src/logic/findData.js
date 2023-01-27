@@ -1,6 +1,4 @@
-function fetchJson(url) {
-    return fetch(url).then(resp => resp.json());
-  }
+import fetchJson from './fetchJson'
 
 function findData(url) {
     return fetchJson(url)

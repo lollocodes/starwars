@@ -30,7 +30,7 @@ a:hover {
   text-decoration: underline;
 }
 
-button {
+.show-more-btn {
   padding: 1em;
   margin: 1em 0;
   width: 100%;
@@ -53,7 +53,7 @@ ul {
   list-style-type: none;
 }
 .hero {
-  background-image: url(../public/images/Skärmbild_20230125_135621.png);
+  background-image: url(../public/images/homeimg.png);
   background-size: cover;
   background-position: center;
   height: 500px;
@@ -71,7 +71,7 @@ ul {
   100% { opacity: 1; }
 }
 
-nav {
+.main-nav {
   position: absolute;
   top: 0;
   left: 0;
@@ -109,7 +109,7 @@ nav {
 
 }
 .card {
-  padding: 1em;
+  padding: 2em 1em;
   margin: 1em 0;
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.2);
@@ -121,3 +121,53 @@ nav {
 }
 
 
+.load-more-btn {
+  padding: 1em;
+}
+
+
+.scroll-to-top {
+  z-index: 9999px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 1em;
+}
+
+.search-btn {
+  padding: 1em;
+  border-radius: 999px;
+  border:none;
+  margin: 1em 0;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 780px) {
+   .search-btn {
+    width: 100%;
+    margin: auto;
+   }
+
+   .search_input {
+    width: 100%;
+    margin: auto;
+  }
+
+  .main-nav {
+   justify-content: center;
+   max-width: 50%;
+   margin: auto;
+  }
+
+  .main-container {
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+   
+}

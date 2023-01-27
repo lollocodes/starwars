@@ -32,7 +32,7 @@ const FilmDetails = ({film}) => {
             <li>Created: {film.created}</li>
             <li>Director: {film.director}</li>
 
-            <button onClick={toggleShowMore}>{showMore ? "Close characters" : "show characters"}</button>
+            <button className='show-more-btn' onClick={toggleShowMore}>{showMore ? "Close characters" : "show characters"}</button>
           {showMore ? 
           <>
             <h4>Characters</h4>
