@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+// import img0 from "../slideImages/img0.jpg"
 import img1 from "../slideImages/img1.jpg"
 import img2 from "../slideImages/img2.jpg"
 import img3 from "../slideImages/img3.jpg"

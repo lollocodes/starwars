@@ -5,21 +5,30 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  NavLink
 } from "react-router-dom";
-
+import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage';
 import PeoplePage from './pages/PeoplePage';
 import PlanetsPage from './pages/PlanetsPage';
 import StarshipsPage from './pages/StarshipsPage';
 import VehiclesPage from './pages/VehiclesPage';
 import SpeciesPage from './pages/SpeciesPage'
+import PeopleDetails from './components/detailsComponents/PeopleDetails';
+import PlanetDetail from './components/detailsComponents/PlanetDetail';
+import FilmDetails from './components/detailsComponents/FilmDetails';
 
 function App() {
   
 const scrollToTop = () => {
   window.scrollTo(0, 0)
 }
+
+
+  // useEffect(() => {
+      
+  // }, []);
+
 
   return (
     <div className="App">
@@ -30,22 +39,22 @@ const scrollToTop = () => {
           <nav className='main-nav'>
             <ul className='nav-list'>
               <li className='list-item'>
-                <Link to="/">Films</Link>
+                <NavLink activeClassName="active" to="/films">Films</NavLink>
               </li>
               <li className='list-item'>
-                <Link to="/people">People</Link>
+                <NavLink activeClassName="active" to="/people">People</NavLink>
               </li>
               <li className='list-item'>
-                <Link to="/planets">Planets</Link>
+                <NavLink activeClassName="active" to="/planets">Planets</NavLink>
               </li>
               <li className='list-item'>
-                <Link to="/starships">Startships</Link>
+                <NavLink activeClassName="active" to="/starships">Startships</NavLink>
               </li>
               <li className='list-item'>
-                <Link to="/vehicles">Vehicles</Link>
+                <NavLink activeClassName="active" to="/vehicles">Vehicles</NavLink>
               </li>
               <li className='list-item'>
-                <Link to="/species">Species</Link>
+                <NavLink activeClassName="active" to="/species">Species</NavLink>
               </li>
             </ul>
           </nav>
@@ -66,6 +75,12 @@ const scrollToTop = () => {
             </Route>
             <Route path="/species">
               <SpeciesPage />
+            </Route>
+            <Route path="/actors/:id">
+              <PeopleDetails />
+            </Route>
+            <Route path="/films/:id">
+              <FilmDetails />
             </Route>
             <Route path="/">
               <HomePage />

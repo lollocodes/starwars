@@ -1,6 +1,6 @@
 :root {
   --white: rgb(225, 225, 225);
-  --blue: #171738;
+  --decore: #491329; /* färg på knappar, sökikon och aktiv länk */
 }
 
 * {
@@ -8,6 +8,10 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+}
+
+.img-Wrapper img {
+  display: none;
 }
 
 
@@ -28,13 +32,19 @@ a, a:visited, a:focus {
 
 a:hover {
   text-decoration: underline;
+
+}
+
+.active {
+  background-color: var(--decore) !important;
+  color: var(--white)
 }
 
 .show-more-btn {
   padding: 1em;
   margin: 1em 0;
   width: 100%;
-  background-color: var(--blue);
+  background-color: var(--decore);
   text-transform: uppercase;
   color: var(--white);
   border: none;
@@ -42,11 +52,13 @@ a:hover {
 }
 h2 {
   text-align: center;
-  margin-bottom: 1em;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: Stars, sans-serif;
+  letter-spacing: 0.2em;
+  margin-top: 1em;
+
 }
 
 ul {
@@ -78,22 +90,48 @@ ul {
   right: 0;
   width: 100%;
   overflow-x: scroll;
+ 
   font-family: Stars, sans-serif;
 }
+
 .nav-list {
+  list-style: none;
   display: flex;
-  
-  list-style-type: none;
+  justify-content: space-between;
 }
 
-.list-item {
-  padding: 1em;
+.list-item a{
+  display: inline-block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
 }
 
 .search_input {
+  /* padding: 1em; */
+  /* border-radius: 999px; */
   padding: 1em;
+  border: none;
+  position: relative;
+  width: 100%;
+  color: var(--white);
+  background: rgba(118, 118, 118, 0.2);
   border-radius: 999px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(38, 38, 38, 0.3);
+}
 
+.search-btn {
+  position: absolute;
+  right: 1em;
+  padding: 1em;
+  background: var(--white);
+  color: var(--decore);
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
 }
 
 .main-container {
@@ -111,18 +149,23 @@ ul {
 .card {
   padding: 2em 1em;
   margin: 1em 0;
-  /* From https://css.glass */
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(118, 118, 118, 0.2);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(38, 38, 38, 0.3);
 }
 
 
 .load-more-btn {
   padding: 1em;
+  background: #000;
+  color: var(--white);
+  border-radius: 999px;
+  border: 1px solid var(--white);
+  margin: 1em 0;
+  text-transform: uppercase;
 }
 
 
@@ -134,40 +177,49 @@ ul {
   padding: 1em;
 }
 
-.search-btn {
-  padding: 1em;
-  border-radius: 999px;
-  border:none;
-  margin: 1em 0;
-  text-transform: uppercase;
-}
+
 
 @media screen and (min-width: 780px) {
    .search-btn {
-    width: 100%;
-    margin: auto;
+    
    }
 
    .search_input {
-    width: 100%;
-    margin: auto;
+
   }
 
   .main-nav {
    justify-content: center;
-   max-width: 50%;
+   max-width: 700px;
    margin: auto;
   }
 
   .main-container {
-    max-width: 100%;
-    display: flex;
-    justify-content: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
   }
 
   .card-container {
     display: grid;
+    gap: 1em;
     grid-template-columns: 1fr 1fr;
   }
+
+  .hero {
+    /* background-image: url(http://localhost:3000/static/media/homeimg.71f2788….png); */
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* background-position: center;
+    height: 500px;
+    position: relative;
+    transition: opacity 5s;
+    opacity: 1; */
+}
    
 }
+
+
+

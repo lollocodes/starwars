@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import FilmDetails from '../components/FilmDetails'
+import FilmDetails from '../components/detailsComponents/FilmDetails'
 import fetchData from '../logic/fetchData';
 import filterSearch from '../logic/filterSearch';
+import { FaSearch } from 'react-icons/fa';
+
 
 const HomePage = () => {
   const [searchField, setSearchField] = useState("");
@@ -35,18 +37,6 @@ const HomePage = () => {
     
   }, [])
 
-
-  // Load more data, show next page of API
-  const handleLoadButton = async () => {
-    const res = await fetchData(next)
-    setData([...data, ...res.results])
-    setNext(res.next)
-    console.log("New data: ", data)
-  }
-
-
-
-
   return (
     <div>
         <h2>Films</h2>
@@ -56,7 +46,7 @@ const HomePage = () => {
             placeholder = "Search films" 
             onChange={(e) => setSearchField(e.target.value)}
             value={searchField} />
-        <button className='search-btn' onClick={handleSearch}>Search</button>
+        <button className='search-btn' onClick={handleSearch}><FaSearch /></button>
 
         <div className='card-container'>
       {searchField ?
@@ -73,7 +63,7 @@ const HomePage = () => {
 
          {data.length === 6 ? 
             <p>Your at the end</p>
-          : <button className='load-more-btn' onClick={handleLoadButton}>Load more</button>}
+          : <></>}
         </>
       }
       </div>
