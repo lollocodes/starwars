@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import Card
  from '../../UI/Card'
- import retrieveList from '../../logic/retriveDataWithUrl';
+ import retrieveDataList from '../../logic/retriveDataWithUrl';
  import getData from '../../logic/findData';
+ import { Link } from 'react-router-dom'
+ import { useParams } from 'react-router'
 
+const SpeciesDetail = () => {
+  const { id } = useParams()
+  const [species, setSpecies] = useState([])
 
-const SpeciesDetail = ({species}) => {
   const [showMore, setShowMore] = useState(false);
   const [filmsData, setFilmsData] = useState([]);
-  const [people, setPeopleData] = useState([]);
+  const [peopleData, setPeopleData] = useState([]);
   const [homeworldData, sethomeworldData] = useState(null);
 
 
@@ -17,15 +21,10 @@ const SpeciesDetail = ({species}) => {
       const getCharacterData = async () => {
         let collectedData;
         if(dataToCollect === species.homeworld) {
-          // let fetchData = await getData(species.homeworld)
-          // if (fetchData === null) {
-          //   collectedData = ""
-          // } else {
-          //   collectedData = fetchData
-          // }
-          collectedData = await getData(species.homeworld)
+          if (species.homeworld === null) return
+          collectedData = await retrieveDataList([species.homeworld])
         } else {
-          collectedData = await retrieveList(dataToCollect)
+          collectedData = await retrieveDataList(dataToCollect)
         }
         switch (dataToSet) {
           case "films":
@@ -61,6 +60,20 @@ const SpeciesDetail = ({species}) => {
     }
   }
 
+  useEffect(() => {
+    const getDataToLocalstorage = async() => {
+      if(!localStorage.getItem("specie" + id) || JSON.parse(localStorage.getItem("specie" + id)).length === 0){
+        const dataPerson = await getData(`https://swapi.dev/api/species/${id}/`)
+        setSpecies(dataPerson)
+        localStorage.setItem("specie" + id, JSON.stringify(dataPerson))
+      } else {
+        let storedData = JSON.parse(localStorage.getItem("specie" + id))
+        setSpecies(storedData)
+      }
+    }
+    getDataToLocalstorage()
+  }, [id]);
+
   const toggleShowMore = () => {
     setShowMore(!showMore)
     if (showMore === false) {
@@ -85,26 +98,36 @@ const SpeciesDetail = ({species}) => {
           {showMore ? 
           <>
             <h4>Homeworld</h4>
-            {homeworldData === null ?   
-            <>This species doesnt have a homeworld</>
-            :
-              <div>
-                <p>{homeworldData.name}</p>
-              </div>
-            }
+            {homeworldData ? 
+            <>
+              {homeworldData.map((el, index) => {
+              return (
+                <Link key={index} to={`/planet/${(el.url).match(/[0-9]+/)}`}>
+                  <p>{el.name}</p>
+                </Link> 
+              )
+            })}     
+            </>
+            : <p>No homeworld available</p>
+          }
 
             <h4>Films</h4>
-            {filmsData.map((el) => {
+            {filmsData.map((el, index) => {
+                return <Link key={index} to={`/film/${(el.url).match(/[0-9]+/)}`}>
+                            <p>{el.title}</p>
+                      </Link> 
+            })}
+            {/* {filmsData.map((el) => {
               return <div key={el.title}>
                   <p>{el.title}</p>
               </div>
-            })}
+            })} */}
 
             <h4>Characters</h4>
-            {people.map((el) => {
-              return <div key={el.name}>
-                  <p>{el.name}</p>
-              </div>
+            {peopleData.map((el, index) => {
+                return <Link key={index} to={`/person/${(el.url).match(/[0-9]+/)}`}>
+                          <p>{el.name}</p>
+                      </Link> 
             })}
             
           </>

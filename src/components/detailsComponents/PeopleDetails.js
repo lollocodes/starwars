@@ -1,22 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import Card
  from '../../UI/Card'
-import FilmDetails from '../detailsComponents/FilmDetails';
-import PlanetDetail from '../detailsComponents/PlanetDetail';
-import StarshipDetail from '../detailsComponents/StarshipDetail';
 import { useParams } from 'react-router'
-
-import retrieveList from '../../logic/retriveDataWithUrl';
+import { Link } from 'react-router-dom'
+import retrieveDataList from '../../logic/retriveDataWithUrl';
 import getData from '../../logic/findData';
-import SpeciesDetail from '../detailsComponents/SpeciesDetail';
-import VehiclesDetails from '../detailsComponents/VehiclesDetails';
 
 const PeopleDetails = () => {
   const { id } = useParams()
-
-  const [showMore, setShowMore] = useState(false);
   const [person, setPerson] = useState(null)
-
+  
+  const [showMore, setShowMore] = useState(false);
   const [homeworldData, sethomeworldData] = useState([]);
   const [filmData, setFilmData] = useState([]);
   const [starshipsData, setStarshipsData] = useState([]);
@@ -28,9 +22,9 @@ const PeopleDetails = () => {
       const getCharacterData = async () => {
         let collectedData;
         if(dataToCollect === person.homeworld) {
-          collectedData = await getData(person.homeworld)
+          collectedData = await retrieveDataList([person.homeworld])
         } else {
-          collectedData = await retrieveList(dataToCollect)
+          collectedData = await retrieveDataList(dataToCollect)
         }
         switch (dataToSet) {
           case "film":
@@ -79,7 +73,7 @@ const PeopleDetails = () => {
   }
 
   useEffect(() => {
-    const getPerson = async() => {
+    const getDataToLocalstorage = async() => {
       if(!localStorage.getItem(id) || JSON.parse(localStorage.getItem(id)).length === 0){
         const dataPerson = await getData(`https://swapi.dev/api/people/${id}/`)
         setPerson(dataPerson)
@@ -89,7 +83,7 @@ const PeopleDetails = () => {
         setPerson(storedData)
       }
     }
-    getPerson()
+    getDataToLocalstorage()
   }, [id]);
 
   const toggleShowMore = () => {
@@ -137,26 +131,45 @@ const PeopleDetails = () => {
           {showMore ? 
           <>
             <h4>Homeworld</h4>
-            <PlanetDetail homeworld={homeworldData} />
-
+            {homeworldData.map((el, index) => {
+              return (
+                <Link key={index} to={`/planet/${(el.url).match(/[0-9]+/)}`}>
+                  <p>{el.name}</p>
+                </Link> 
+              )
+            })}
             <h4>Films</h4>
-            {filmData.map((el) => {
+            {/* {filmData.map((el) => {
               return <FilmDetails key={el.title} film={el} />
+            })} */}
+            {filmData.map((el, index) => {
+                return <Link key={index} to={`/film/${(el.url).match(/[0-9]+/)}`}>
+                            <p>{el.title}</p>
+                      </Link> 
             })}
             
             <h4>Starship</h4>
-            {starshipsData.map((el) => {
-              return <StarshipDetail key={el.name} starship={el} />
+            {starshipsData.map((el, index) => {
+              return <Link key={index} to={`/starship/${(el.url).match(/[0-9]+/)}`}>
+                        <p>{el.name}</p>
+                      </Link>
             })}
+            {/* {starshipsData.map((el) => {
+              return <StarshipDetail key={el.name} starship={el} />
+            })} */}
 
             <h4>Species</h4>
-            {speciesData.map((el) => {
-              return <SpeciesDetail key={el.name} species={el} />
+            {speciesData.map((el, index) => {
+              return <Link key={index} to={`/specie/${(el.url).match(/[0-9]+/)}`}>
+                          <p>{el.name}</p>
+                    </Link>
             })}
 
             <h4>Vehicles</h4>
-            {vehiclesData.map((el) => {
-              return <VehiclesDetails key={el.url} vehicle={el} />
+            {vehiclesData.map((el, index) => {
+              return <Link key={index} to={`/vehicle/${(el.url).match(/[0-9]+/)}`}>
+                        <p>{el.name}</p>
+                      </Link>
             })}
           </>
           : <></>

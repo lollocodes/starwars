@@ -10,9 +10,9 @@
   font-family: 'Roboto', sans-serif;
 }
 
-.img-Wrapper img {
+/* .img-Wrapper img {
   display: none;
-}
+} */
 
 
 @font-face {
@@ -49,16 +49,36 @@ a:hover {
   color: var(--white);
   border: none;
   border-radius: 999px;
+  cursor: pointer;
 }
-h2 {
+
+.arrow {
+  background-color: var(--decore);
+  color: var(--white);
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  /* text-align: center;
+  line-height: 50px;
+  vertical-align: middle;
+  padding: 15px; */
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+}
+
+.page-title {
   text-align: center;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: Stars, sans-serif;
   letter-spacing: 0.2em;
-  margin-top: 1em;
-
+  margin: 1em 0 0.5em 0;
 }
 
 ul {
@@ -90,7 +110,6 @@ ul {
   right: 0;
   width: 100%;
   overflow-x: scroll;
- 
   font-family: Stars, sans-serif;
 }
 
@@ -136,16 +155,22 @@ ul {
 
 .main-container {
   position: absolute;
-  top: 300px;
+  top: 260px;
   padding: 0 1em;
   width: 100%;
 }
 
 .card-container {
   display: grid;
-  /* grid-template-columns: 1fr 1fr; */
-
+  gap: 1em;
+  margin-bottom: 1em;
 }
+
+.card-container .card {
+  display: flex;
+  align-items: center;
+  height: 100%;
+} 
 .card {
   padding: 2em 1em;
   margin: 1em 0;
@@ -155,8 +180,14 @@ ul {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(38, 38, 38, 0.3);
+
 }
 
+.card-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
 .load-more-btn {
   padding: 1em;
@@ -166,6 +197,8 @@ ul {
   border: 1px solid var(--white);
   margin: 1em 0;
   text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
 }
 
 
@@ -174,7 +207,17 @@ ul {
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 1em;
+  
+  background-color: var(--decore);
+  color: var(--white);
+  border: none;
+  padding: 0.7em 2em;
+  border-radius: 20px 0 0;
+  font-size: 0.9em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-transform: uppercase;
 }
 
 
@@ -220,6 +263,5 @@ ul {
 }
    
 }
-
 
 

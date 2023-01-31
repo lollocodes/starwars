@@ -1,10 +1,15 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Card
  from '../../UI/Card'
- import retrieveList from '../../logic/retriveDataWithUrl';
+ import retrieveDataList from '../../logic/retriveDataWithUrl';
  import { Link } from 'react-router-dom'
+ import { useParams } from 'react-router'
+ import getData from '../../logic/findData';
 
-const PlanetDetail = ({homeworld}) => {
+const PlanetDetail = () => {
+  const { id } = useParams()
+  const [homeworld, setHomeworld] = useState([]);
+
   const [showMore, setShowMore] = useState(false);
   const [residentsData, setResidentsData] = useState([]);
   const [filmsData, setFilmsData] = useState([]);
@@ -13,7 +18,7 @@ const PlanetDetail = ({homeworld}) => {
     if(!localStorage.getItem(referenceName) || JSON.parse(localStorage.getItem(referenceName)).length === 0){
       const getCharacterData = async () => {
         let collectedData;
-        collectedData = await retrieveList(dataToCollect)
+        collectedData = await retrieveDataList(dataToCollect)
         switch (dataToSet) {
           case "residents":
             setResidentsData(collectedData)
@@ -42,6 +47,20 @@ const PlanetDetail = ({homeworld}) => {
     }
   }
 
+  useEffect(() => {
+    const getDataToLocalstorage = async() => {
+      if(!localStorage.getItem("planet" + id) || JSON.parse(localStorage.getItem("planet" + id)).length === 0){
+        const dataPerson = await getData(`https://swapi.dev/api/planets/${id}/`)
+        setHomeworld(dataPerson)
+        localStorage.setItem("planet" + id, JSON.stringify(dataPerson))
+      } else {
+        let storedData = JSON.parse(localStorage.getItem("planet" + id))
+        setHomeworld(storedData)
+      }
+    }
+    getDataToLocalstorage()
+  }, [id]);
+
   const toggleShowMore = () => {
     setShowMore(!showMore)
     if (showMore === false) {
@@ -59,23 +78,35 @@ const PlanetDetail = ({homeworld}) => {
         <li>Climate: {homeworld.climate}</li>
         <li>Gravity: {homeworld.gravity}</li>
         <li>Terrain: {homeworld.terrain}</li>
+        <li>Surface water: {homeworld["surface_water"]}</li>
+        <li>Population: {homeworld.population}</li>
       </ul>
 
       <button className='show-more-btn' onClick={toggleShowMore}>{showMore ? "Close" : "More info"}</button>
           {showMore ? 
           <>
             <h4>Residents</h4>
-            {residentsData.map((el) => {
-              return <div key={el.name}>
-                  <p>{el.name}</p>
-              </div>
+            {residentsData.map((el, index) => {
+              // return <div key={el.name}>
+              //     <p>{el.name}</p>
+              // </div>
+              return ( 
+                <Link key={index} to={`/person/${(el.url).match(/[0-9]+/)}`}>
+                      <p>{el.name}</p>
+                  </Link>
+              )
             })}
 
             <h4>Films</h4>
-            {filmsData.map((el) => {
-              return <div key={el.title}>
-                  <p>{el.title}</p>
-              </div>
+            {filmsData.map((el, index) => {
+              // return <div key={el.title}>
+              //     <p>{el.title}</p>
+              // </div>
+              return (
+              <Link key={index} to={`/film/${(el.url).match(/[0-9]+/)}`}>
+                      <p>{el.title}</p>
+                  </Link>
+                )
             })}
 
           </>

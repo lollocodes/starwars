@@ -2,7 +2,9 @@ import React, {useState, useEffect} from 'react'
 import fetchData from '../logic/fetchData';
 import filterSearch from '../logic/filterSearch';
 import { FaSearch } from 'react-icons/fa';
-import StarshipDetail from '../components/detailsComponents/StarshipDetail';
+import { BsArrowRight } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
+import Card from '../UI/Card';
 
 const Starships = () => {
   const [searchField, setSearchField] = useState("");
@@ -17,11 +19,8 @@ const Starships = () => {
   }
    
   useEffect(() => {
-    
     if(!localStorage.getItem("starships") || JSON.parse(localStorage.getItem("starships")).length === 0){
-      console.log("We didnt have data in localstorage, a fetch will run")
       const getstarshipsData = async () => {
-        console.log("a fetch ran")
         const res = await fetchData("https://swapi.dev/api/starships/?page=1")
         setData(res.results)
         setNext(res.next)
@@ -30,7 +29,6 @@ const Starships = () => {
       }
       getstarshipsData()
     } else {
-      console.log("we already have data in localstorage, a fetch will not run")
       let storedData = JSON.parse(localStorage.getItem('starships'))
       let storedDataNext = JSON.parse(localStorage.getItem('starshipsNextPage'))
       setData(storedData.results)
@@ -39,10 +37,8 @@ const Starships = () => {
     
   }, [])
 
-
   // Load more data, show next page of API
   const handleLoadButton = async () => {
-    console.log("next is: ", next)
     const res = await fetchData(next)
     
     setData([...data, ...res.results])
@@ -55,37 +51,63 @@ const Starships = () => {
     existingEntries.results.push(...res.results);
     localStorage.setItem("starships", JSON.stringify(existingEntries));
   }
+
   return (
     <div>
-      <h2>Starships</h2>
+      <h2 className='page-title'>Starships</h2>
       <input 
             className="search_input"
             type = "text" 
             placeholder = "Search starships" 
             onChange={(e) => setSearchField(e.target.value)}
+            onKeyDown={(e) => {if (e.key === "Enter") {handleSearch()}}}
             value={searchField} />
         <button className='search-btn' onClick={handleSearch}><FaSearch /></button>
         <div className='card-container'>
         {searchField ?
         <>
-          {filteredList.map((el) => {
+          {/* {filteredList.map((el) => {
             return <StarshipDetail key={el.name} starship={el}/>
+          })} */}
+          {filteredList.map((el, index) => {
+                return (
+                  <Link key={index} to={`/starship/${(el.url).match(/[0-9]+/)}`}>
+                      <Card>
+                        <div className='card-title'>
+                          <h3>{el.name}</h3>
+                          <i className='arrow'><BsArrowRight /></i>
+                        </div>
+                      </Card>
+                  </Link>
+                )          
           })}
       
         </>
         :
         <>
-          {data.map((el) => {
+          {/* {data.map((el) => {
             return <StarshipDetail key={el.name} starship={el}/>
-      })} 
+          })}  */}
 
-         {data.length === 36 ? 
-            <p>Your at the end</p>
-          : <button className='load-more-btn' onClick={handleLoadButton}>Load more</button>
-          }
+            {data.map((el, index) => {
+                return (
+                  <Link key={index} to={`/starship/${(el.url).match(/[0-9]+/)}`}>
+                      <Card>
+                        <div className='card-title'>
+                          <h3>{el.name}</h3>
+                          <i className='arrow'><BsArrowRight /></i>
+                        </div>
+                      </Card>
+                  </Link>
+                )
+            })}
         </>
       }
         </div>
+      {data.length === 36 ? 
+         <p>Your at the end</p>
+       : <button className='load-more-btn' onClick={handleLoadButton}>Load more</button>
+       }
       
     </div>
   )

@@ -1,14 +1,17 @@
-.homeImg {
+/* .homeImg {
     max-width: 100%;
   }
 
-  .image {
+ .image {
     display: none;
-  }
+  } 
 
   .imgWrapper {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   @keyframes blender {
@@ -38,4 +41,26 @@
     opacity: 0;
     animation: blender 5s linear 50ms;
   }
+ */
 
+ .slider {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+ }
+
+ .slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(-50%);
+  transition: all 0.5s ease;
+ }
+
+ .current {
+  opacity: 1;
+  transform: translateX(0%);
+ }

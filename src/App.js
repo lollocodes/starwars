@@ -7,7 +7,7 @@ import {
   Route,
   NavLink
 } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import {MdOutlineKeyboardArrowUp} from 'react-icons/md'
 import HomePage from './pages/HomePage';
 import PeoplePage from './pages/PeoplePage';
 import PlanetsPage from './pages/PlanetsPage';
@@ -17,25 +17,22 @@ import SpeciesPage from './pages/SpeciesPage'
 import PeopleDetails from './components/detailsComponents/PeopleDetails';
 import PlanetDetail from './components/detailsComponents/PlanetDetail';
 import FilmDetails from './components/detailsComponents/FilmDetails';
+import VehiclesDetails from './components/detailsComponents/VehiclesDetails';
+import StarshipDetail from './components/detailsComponents/StarshipDetail';
+import SpeciesDetail from './components/detailsComponents/SpeciesDetail';
 
 function App() {
   
-const scrollToTop = () => {
-  window.scrollTo(0, 0)
-}
-
-
-  // useEffect(() => {
-      
-  // }, []);
-
+  const scrollToTop = () => {
+    window.scrollTo(0, 0)
+  }
 
   return (
     <div className="App">
-      
       <Router>
         <div>
-        <div className='hero fade-in-image'><Header /></div>
+          {/* <Header /> */}
+        <div className='hero fade-in-image'></div>
           <nav className='main-nav'>
             <ul className='nav-list'>
               <li className='list-item'>
@@ -58,7 +55,6 @@ const scrollToTop = () => {
               </li>
             </ul>
           </nav>
-          
           <div className="main-container">
           <Switch>
             <Route path="/people">
@@ -76,12 +72,25 @@ const scrollToTop = () => {
             <Route path="/species">
               <SpeciesPage />
             </Route>
-            <Route path="/actors/:id">
+            <Route path="/person/:id">
               <PeopleDetails />
             </Route>
-            <Route path="/films/:id">
+            <Route path="/film/:id">
               <FilmDetails />
             </Route>
+            <Route path="/vehicle/:id">
+              <VehiclesDetails />
+            </Route>
+            <Route path="/starship/:id">
+              <StarshipDetail />
+            </Route>
+            <Route path="/specie/:id">
+              <SpeciesDetail />
+            </Route>
+            <Route path="/planet/:id">
+              <PlanetDetail />
+            </Route>
+
             <Route path="/">
               <HomePage />
             </Route>
@@ -89,8 +98,7 @@ const scrollToTop = () => {
           </div>
         </div>
       </Router>
-
-            <button className='scroll-to-top' onClick={scrollToTop}>Scroll up</button>
+      <button className='scroll-to-top' onClick={scrollToTop}><MdOutlineKeyboardArrowUp />Scroll up</button>
     </div>
   );
 }

@@ -1,9 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import Card
  from '../../UI/Card'
- import retrieveList from '../../logic/retriveDataWithUrl';
+ import retrieveDataList from '../../logic/retriveDataWithUrl';
+ import { Link } from 'react-router-dom'
+ import { useParams } from 'react-router'
+ import getData from '../../logic/findData';
 
-const VehiclesDetails = ({vehicle}) => {
+const VehiclesDetails = () => {
+  const { id } = useParams()
+  const [vehicle, setVehicle] = useState([])
+
   const [showMore, setShowMore] = useState(false);
   const [filmsData, setFilmsData] = useState([]);
   const [pilots, setPilotsData] = useState([]);
@@ -12,7 +18,7 @@ const VehiclesDetails = ({vehicle}) => {
     if(!localStorage.getItem(referenceName) || JSON.parse(localStorage.getItem(referenceName)).length === 0){
       const getCharacterData = async () => {
         let collectedData;
-        collectedData = await retrieveList(dataToCollect)
+        collectedData = await retrieveDataList(dataToCollect)
         switch (dataToSet) {
           case "films":
             setFilmsData(collectedData)
@@ -41,6 +47,19 @@ const VehiclesDetails = ({vehicle}) => {
     }
   }
 
+  useEffect(() => {
+    const getDataToLocalstorage = async() => {
+      if(!localStorage.getItem("vehicle" + id) || JSON.parse(localStorage.getItem("vehicle" + id)).length === 0){
+        const dataPerson = await getData(`https://swapi.dev/api/vehicles/${id}/`)
+        setVehicle(dataPerson)
+        localStorage.setItem("vehicle" + id, JSON.stringify(dataPerson))
+      } else {
+        let storedData = JSON.parse(localStorage.getItem("vehicle" + id))
+        setVehicle(storedData)
+      }
+    }
+    getDataToLocalstorage()
+  }, [id]);
 
   const toggleShowMore = () => {
     setShowMore(!showMore)
@@ -52,6 +71,8 @@ const VehiclesDetails = ({vehicle}) => {
 
   return (
     <Card>
+      {vehicle ? <>
+      
         <h3>{vehicle.name}</h3>
         <ul>
             <li>Model: {vehicle.model}</li>
@@ -61,23 +82,31 @@ const VehiclesDetails = ({vehicle}) => {
           {showMore ? 
           <>
             <h4>Films</h4>
-            {filmsData.map((el) => {
+            {/* {filmsData.map((el) => {
               return <div key={el.title}>
                   <p>{el.title}</p>
               </div>
+            })} */}
+            {filmsData.map((el, index) => {
+                return <Link key={index} to={`/film/${(el.url).match(/[0-9]+/)}`}>
+                            <p>{el.title}</p>
+                      </Link> 
             })}
 
             <h4>Pilots</h4>
-            {pilots.map((el) => {
-              return <div key={el.name}>
-                  <p>{el.name}</p>
-              </div>
+            {pilots.map((el, index) => {
+                return <Link key={index} to={`/person/${(el.url).match(/[0-9]+/)}`}>
+                          <p>{el.name}</p>
+                        </Link> 
             })}
             
           </>
           : <></>
         }
         </ul>
+      
+      </> :<></>}
+        
     </Card>
   )
 }

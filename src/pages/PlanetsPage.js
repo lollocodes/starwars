@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react'
-import PlanetDetail from '../components/detailsComponents/PlanetDetail';
 import fetchData from '../logic/fetchData';
 import { FaSearch } from 'react-icons/fa';
+import { BsArrowRight } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
+import Card from '../UI/Card';
 
 const PlanetsPage = () => {
   const [searchField, setSearchField] = useState("");
@@ -23,15 +25,12 @@ const PlanetsPage = () => {
 
   const handleSearch = () => {
     filteredPersons(searchField)
-    console.log("handlesearch", searchField)
   }
    
   useEffect(() => {
     
     if(!localStorage.getItem("planets") || JSON.parse(localStorage.getItem("planets")).length === 0){
-      console.log("We didnt have data in localstorage, a fetch will run")
       const getplanetsData = async () => {
-        console.log("a fetch ran")
         const res = await fetchData("https://swapi.dev/api/planets/?page=1")
         setData(res.results)
         setNext(res.next)
@@ -40,7 +39,6 @@ const PlanetsPage = () => {
       }
       getplanetsData()
     } else {
-      console.log("we already have data in localstorage, a fetch will not run")
       let storedData = JSON.parse(localStorage.getItem('planets'))
       let storedDataNext = JSON.parse(localStorage.getItem('planetsNextPage'))
       setData(storedData.results)
@@ -67,34 +65,60 @@ const PlanetsPage = () => {
 
   return (
     <div>
-      <h2>Planets</h2>
+      <h2 className='page-title'>Planets</h2>
       <input 
             className="search_input"
             type = "text" 
             placeholder = "Search Planets" 
             onChange={(e) => handleChange(e.target.value)}
+            onKeyDown={(e) => {if (e.key === "Enter") {handleSearch()}}}
             value={searchField} />
         <button className='search-btn' onClick={handleSearch}><FaSearch /></button>
 
       <div className='card-container'>
         {searchField ?
           <>
-            {filteredList.map((el) => {
+            {/* {filteredList.map((el) => {
               return <PlanetDetail key={el.name} homeworld={el} />
-            })}
+            })} */}
+            {filteredList.map((el, index) => {
+            return (
+                  <Link key={index} to={`/planet/${(el.url).match(/[0-9]+/)}`}>
+                      <Card>
+                      <div className='card-title'>
+                          <h3>{el.name}</h3>
+                          <i className='arrow'><BsArrowRight /></i>
+                        </div>
+                      </Card>
+                  </Link>
+            )
+          })}
           </>
           :
           <>
-            {data.map((el) => {
+            {/* {data.map((el) => {
                   return <PlanetDetail key={el.name} homeworld={el} />
-            })}
+            })} */}
+            {data.map((el, index) => {
+            return (
+                  <Link key={index} to={`/planet/${(el.url).match(/[0-9]+/)}`}>
+                      <Card>
+                      <div className='card-title'>
+                          <h3>{el.name}</h3>
+                          <i className='arrow'><BsArrowRight /></i>
+                        </div>
+                      </Card>
+                  </Link>
+            )
+          })}
 
-          {data.length === 60 ? 
-              <p>Your at the end</p>
-            : <button className='load-more-btn' onClick={handleLoadButton}>Load more</button>}
           </>
         }
       </div>
+        {data.length === 60 ? 
+            <p>Your at the end</p>
+          : <button className='load-more-btn' onClick={handleLoadButton}>Load more</button>
+        }
     </div>
   )
 }

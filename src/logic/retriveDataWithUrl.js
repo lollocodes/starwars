@@ -1,6 +1,6 @@
 import getData from "./getData"
 
-const retrieveList = async (array) => {
+const retrieveDataList = async (array) => {
   let dataList = []
   for (let url of array) {
     dataList = [...dataList, await getData(url)]
@@ -8,4 +8,4 @@ const retrieveList = async (array) => {
   return dataList
 }
 
-export default retrieveList
+export default retrieveDataList

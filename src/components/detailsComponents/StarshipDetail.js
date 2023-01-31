@@ -1,9 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import Card
  from '../../UI/Card'
- import retrieveList from '../../logic/retriveDataWithUrl';
+ import retrieveDataList from '../../logic/retriveDataWithUrl';
+ import { Link } from 'react-router-dom'
+ import { useParams } from 'react-router'
+ import getData from '../../logic/findData';
 
-const StarshipDetail = ({starship}) => {
+const StarshipDetail = () => {
+  const { id } = useParams()
+  const [starship, setStarship] = useState([])
+
   const [showMore, setShowMore] = useState(false);
   const [filmsData, setFilmsData] = useState([]);
   const [pilots, setPilotsData] = useState([]);
@@ -12,7 +18,7 @@ const StarshipDetail = ({starship}) => {
     if(!localStorage.getItem(referenceName) || JSON.parse(localStorage.getItem(referenceName)).length === 0){
       const getCharacterData = async () => {
         let collectedData;
-        collectedData = await retrieveList(dataToCollect)
+        collectedData = await retrieveDataList(dataToCollect)
         switch (dataToSet) {
           case "films":
             setFilmsData(collectedData)
@@ -41,6 +47,19 @@ const StarshipDetail = ({starship}) => {
     }
   }
 
+  useEffect(() => {
+    const getDataToLocalstorage = async() => {
+      if(!localStorage.getItem("starship" + id) || JSON.parse(localStorage.getItem("starship" + id)).length === 0){
+        const dataPerson = await getData(`https://swapi.dev/api/starships/${id}/`)
+        setStarship(dataPerson)
+        localStorage.setItem("starship" + id, JSON.stringify(dataPerson))
+      } else {
+        let storedData = JSON.parse(localStorage.getItem("starship" + id))
+        setStarship(storedData)
+      }
+    }
+    getDataToLocalstorage()
+  }, [id]);
 
   const toggleShowMore = () => {
     setShowMore(!showMore)
@@ -62,18 +81,28 @@ const StarshipDetail = ({starship}) => {
           {showMore ? 
           <>
             <h4>Films</h4>
-            {filmsData.map((el) => {
+            {filmsData.map((el, index) => {
+                return <Link key={index} to={`/film/${(el.url).match(/[0-9]+/)}`}>
+                            <p>{el.title}</p>
+                      </Link> 
+            })}
+            {/* {filmsData.map((el) => {
               return <div key={el.title}>
                   <p>{el.title}</p>
               </div>
-            })}
+            })} */}
 
             <h4>Pilots</h4>
-            {pilots.map((el) => {
+            {pilots.map((el, index) => {
+                return <Link key={index} to={`/person/${(el.url).match(/[0-9]+/)}`}>
+                          <p>{el.name}</p>
+                        </Link> 
+            })}
+            {/* {pilots.map((el) => {
               return <div key={el.name}>
                   <p>{el.name}</p>
               </div>
-            })}
+            })} */}
             
           </>
           : <></>

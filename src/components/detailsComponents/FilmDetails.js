@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react'
 import Card
  from '../../UI/Card'
  import { Link } from 'react-router-dom'
+ import { useParams } from 'react-router'
+ import getData from '../../logic/findData';
+import retrieveDataList from '../../logic/retriveDataWithUrl';
 
+const FilmDetails = () => {
+  const { id } = useParams()
+  const [film, setFilm] = useState(null)
 
-import retrieveList from '../../logic/retriveDataWithUrl';
-
-
-const FilmDetails = ({film}) => {
   const [showMore, setShowMore] = useState(false);
   const [characterData, setCharacterData] = useState([]);
   const [planetsData, setPlanetsData] = useState([]);
@@ -19,7 +21,7 @@ const FilmDetails = ({film}) => {
     if(!localStorage.getItem(referenceName) || JSON.parse(localStorage.getItem(referenceName)).length === 0){
       const getCharacterData = async () => {
         let collectedData;
-        collectedData = await retrieveList(dataToCollect)
+        collectedData = await retrieveDataList(dataToCollect)
         switch (dataToSet) {
           case "characters":
             setCharacterData(collectedData)
@@ -66,6 +68,20 @@ const FilmDetails = ({film}) => {
     }
   }
 
+  useEffect(() => {
+    const getDataToLocalstorage = async() => {
+      if(!localStorage.getItem("film" + id) || JSON.parse(localStorage.getItem("film" + id)).length === 0){
+        const dataPerson = await getData(`https://swapi.dev/api/films/${id}/`)
+        setFilm(dataPerson)
+        localStorage.setItem("film" + id, JSON.stringify(dataPerson))
+      } else {
+        let storedData = JSON.parse(localStorage.getItem("film" + id))
+        setFilm(storedData)
+      }
+    }
+    getDataToLocalstorage()
+  }, [id]);
+
   const toggleShowMore = () => {
     setShowMore(!showMore)
     if (showMore === false) {
@@ -79,7 +95,9 @@ const FilmDetails = ({film}) => {
 
   return (
     <Card>
-        <h3>{film.title}</h3>
+      {film ? 
+      <>
+      <h3>{film.title}</h3>
         <ul>
             <li>Created: {film.created}</li>
             <li>Episode id: {film["episode_id"]}</li>
@@ -92,38 +110,44 @@ const FilmDetails = ({film}) => {
           {showMore ? 
           <>
             <h4>Characters</h4>
-            {characterData.map((el) => {
+            {/* {characterData.map((el) => {
               return <div key={el.name}>
                   <p>{el.name}</p>
               </div>
+            })} */}
+
+            {characterData.map((el, index) => {
+                return <Link key={index} to={`/person/${(el.url).match(/[0-9]+/)}`}>
+                            <p>{el.name}</p>
+                      </Link> 
             })}
 
             <h4>Planets</h4>
-            {planetsData.map((el) => {
-              return <div key={el.name}>
-                  <p>{el.name}</p>
-              </div>
+            {planetsData.map((el, index) => {
+                return <Link key={index} to={`/planet/${(el.url).match(/[0-9]+/)}`}>
+                              <p>{el.name}</p>
+                        </Link> 
             })}
 
             <h4>Vehicles</h4>
-            {vehiclesData.map((el) => {
-              return <div key={el.name}>
-                  <p>{el.name}</p>
-              </div>
+            {vehiclesData.map((el, index) => {
+              return <Link key={index} to={`/vehicle/${(el.url).match(/[0-9]+/)}`}>
+                        <p>{el.name}</p>
+                      </Link> 
             })}
 
             <h4>Starships</h4>
-            {starshipsData.map((el) => {
-              return <div key={el.name}>
-                  <p>{el.name}</p>
-              </div>
+            {starshipsData.map((el, index) => {
+              return <Link key={index} to={`/starship/${(el.url).match(/[0-9]+/)}`}>
+                        <p>{el.name}</p>
+                      </Link>
             })}
 
             <h4>Species</h4>
-            {speciesData.map((el) => {
-              return <div key={el.name}>
-                  <p>{el.name}</p>
-              </div>
+            {speciesData.map((el, index) => {
+              return <Link key={index} to={`/specie/${(el.url).match(/[0-9]+/)}`}>
+                          <p>{el.name}</p>
+                    </Link>
             })}
             
           </>
@@ -131,6 +155,11 @@ const FilmDetails = ({film}) => {
         }
 
         </ul>
+      </> 
+      
+      
+      : <></>}
+        
     </Card>
   )
 }
