@@ -40,7 +40,12 @@ a:hover {
   background-color: transparent;
   padding: 1em;
   border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
 }
+
 .darkMode .mode-btn {
   border: 0.2px solid var(--white);
   color: var(--white);
@@ -193,24 +198,40 @@ ul {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(38, 38, 38, 0.3);
+  height: 3.5em;
 }
 
+.lightMode .search_input {
+  color: #000 !important;
+}
 
 .search-btn {
   position: absolute;
   right: 1em;
-  padding: 1em;
   background: var(--white);
   color: var(--decore);
   border: none;
   cursor: pointer;
-  border-radius: 999px;
+  /* border-radius: 999px; */
+
+  width: 3.5em;
+  height: 3.5em;
+  border-radius: 100%;
+  padding: 1em;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.search-btn svg {
+  
 }
 
 .lightMode .search-btn {
   color: var(--decore-light);
-  background: transparent;
+  background: #fff;
 }
+
 
 .main-container {
   position: absolute;
@@ -245,7 +266,6 @@ ul {
 .lightMode .card, .lightMode .search_input {
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -272,7 +292,7 @@ ul {
 
 .lightMode .load-more-btn {
   color: #000;
-  background: var(--white);
+  background: #fff;
   border: 1px solid #000;
 }
 
