@@ -8,6 +8,7 @@ import {
   NavLink
 } from "react-router-dom";
 import {MdOutlineKeyboardArrowUp} from 'react-icons/md'
+import {BsFillMoonFill, BsSun} from 'react-icons/bs';
 import HomePage from './pages/HomePage';
 import PeoplePage from './pages/PeoplePage';
 import PlanetsPage from './pages/PlanetsPage';
@@ -20,19 +21,35 @@ import FilmDetails from './components/detailsComponents/FilmDetails';
 import VehiclesDetails from './components/detailsComponents/VehiclesDetails';
 import StarshipDetail from './components/detailsComponents/StarshipDetail';
 import SpeciesDetail from './components/detailsComponents/SpeciesDetail';
+import { useState, useEffect } from 'react';
 
 function App() {
-  
+  const [theme, setTheme] = useState('darkMode');
+
   const scrollToTop = () => {
     window.scrollTo(0, 0)
   }
 
+  const handleChangeTheme = () => {
+    if (theme === 'lightMode') {
+      setTheme('darkMode');
+    } else {
+      setTheme('lightMode');
+    }
+  }
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
   return (
-    <div className="App">
+    <div>
       <Router>
         <div>
           {/* <Header /> */}
-        <div className='hero fade-in-image'></div>
+        <div className='hero fade-in-image'>       
+
+        </div>
           <nav className='main-nav'>
             <ul className='nav-list'>
               <li className='list-item'>
@@ -56,6 +73,12 @@ function App() {
             </ul>
           </nav>
           <div className="main-container">
+          <button className='mode-btn' onClick={() => {
+                  handleChangeTheme()
+                }}>
+                  {theme === "darkMode" ? <><BsSun/> Light mode</> : <><BsFillMoonFill/> Dark mode</>}
+                </button>
+          
           <Switch>
             <Route path="/people">
               <PeoplePage />

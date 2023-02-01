@@ -1,6 +1,7 @@
 :root {
   --white: rgb(225, 225, 225);
   --decore: #491329; /* färg på knappar, sökikon och aktiv länk */
+  --decore-light: #1e4766;
 }
 
 * {
@@ -20,11 +21,6 @@
   src: url("./fonts/star.woff") format("woff");
 }
 
-body {
-  background-color: #000000;
-  color: var(--white);
-}
-
 a, a:visited, a:focus {
   color: inherit;
   text-decoration: none;
@@ -36,24 +32,83 @@ a:hover {
 }
 
 .active {
-  background-color: var(--decore) !important;
-  color: var(--white)
+  background-color: var(--decore);
+  color: var(--white) !important;
+}
+
+.mode-btn {
+  background-color: transparent;
+  padding: 1em;
+  border-radius: 999px;
+}
+.darkMode .mode-btn {
+  border: 0.2px solid var(--white);
+  color: var(--white);
+}
+.lightMode .mode-btn {
+  border: 0.2px solid #000;
+  color: #000;
+}
+
+.lightMode .active {
+  background-color: var(--decore-light);
+}
+
+
+.darkMode {
+  background-color: #000000;
+  color: var(--white);
+}
+
+.lightMode {
+  color: #000000;
+  background-color: #fff;
+}
+
+.lightMode .hero{
+  background-image: url(../public/images/storm2.jpg);
+}
+
+.darkMode .hero {
+  background-image: url(../public/images/homeimg.png);
+}
+
+.hero {
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  position: relative;
+  transition: opacity 5s;  
+  opacity: 1; 
+  background-repeat: no-repeat;
+}
+
+.darkMode .arrow {
+  background-color: var(--decore);
+}
+.lightMode .arrow {
+  background-color: var(--decore-light);
 }
 
 .show-more-btn {
-  padding: 1em;
-  margin: 1em 0;
-  width: 100%;
-  background-color: var(--decore);
   text-transform: uppercase;
   color: var(--white);
   border: none;
   border-radius: 999px;
   cursor: pointer;
+  padding: 1em;
+  margin: 1em 0;
+  width: 100%;
+}
+.darkMode .show-more-btn {
+  background-color: var(--decore);
+}
+.lightMode .show-more-btn {
+  background-color: var(--decore-light);
 }
 
 .arrow {
-  background-color: var(--decore);
+  /* background-color: var(--decore); */
   color: var(--white);
   width: 50px;
   height: 50px;
@@ -84,15 +139,7 @@ h1, h2, h3, h4, h5, h6 {
 ul {
   list-style-type: none;
 }
-.hero {
-  background-image: url(../public/images/homeimg.png);
-  background-size: cover;
-  background-position: center;
-  height: 500px;
-  position: relative;
-  transition: opacity 5s;  
-  opacity: 1; 
-}
+
 
 .fade-in-image { 
   animation: fadeIn 5s; 
@@ -119,11 +166,17 @@ ul {
   justify-content: space-between;
 }
 
-.list-item a{
-  display: inline-block;
-  padding: 10px 15px;
-  text-decoration: none;
-  color: white;
+.list-item a {
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+.darkMode .list-item a{
+  color: var(--white);
+}
+.lightMode .list-item a{
+  color: #000;
 }
 
 .search_input {
@@ -142,6 +195,7 @@ ul {
   border: 1px solid rgba(38, 38, 38, 0.3);
 }
 
+
 .search-btn {
   position: absolute;
   right: 1em;
@@ -151,6 +205,11 @@ ul {
   border: none;
   cursor: pointer;
   border-radius: 999px;
+}
+
+.lightMode .search-btn {
+  color: var(--decore-light);
+  background: transparent;
 }
 
 .main-container {
@@ -174,13 +233,23 @@ ul {
 .card {
   padding: 2em 1em;
   margin: 1em 0;
+  /* From https://css.glass */
   background: rgba(118, 118, 118, 0.2);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(38, 38, 38, 0.3);
+}
 
+.lightMode .card, .lightMode .search_input {
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .card-title {
@@ -191,7 +260,6 @@ ul {
 
 .load-more-btn {
   padding: 1em;
-  background: #000;
   color: var(--white);
   border-radius: 999px;
   border: 1px solid var(--white);
@@ -199,7 +267,15 @@ ul {
   text-transform: uppercase;
   cursor: pointer;
   width: 100%;
+  background: #000;
 }
+
+.lightMode .load-more-btn {
+  color: #000;
+  background: var(--white);
+  border: 1px solid #000;
+}
+
 
 
 .scroll-to-top {
@@ -207,7 +283,6 @@ ul {
   position: fixed;
   bottom: 0;
   right: 0;
-  
   background-color: var(--decore);
   color: var(--white);
   border: none;
@@ -218,6 +293,10 @@ ul {
   flex-direction: column;
   align-items: center;
   text-transform: uppercase;
+}
+
+.lightMode .scroll-to-top {
+  background-color: var(--decore-light);
 }
 
 
