@@ -56,7 +56,7 @@ const HomePage = () => {
           {filteredList.map((el, index) => {
             // return <FilmDetails key={el.title} film={el} />
             return (
-                  <Link key={index} to={`/film/${(el.url).match(/[0-9]+/)}`}>
+                  <Link key={index} to={`/film/${(el.url).split("/").slice(-2).join("")}`}>
                       <Card>
                         <div className='card-title'>
                           <h3>{el.title}</h3>

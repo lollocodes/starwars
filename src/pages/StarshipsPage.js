@@ -71,7 +71,7 @@ const Starships = () => {
           })} */}
           {filteredList.map((el, index) => {
                 return (
-                  <Link key={index} to={`/starship/${(el.url).match(/[0-9]+/)}`}>
+                  <Link key={index} to={`/starship/${(el.url).split("/").slice(-2).join("")}`}>
                       <Card>
                         <div className='card-title'>
                           <h3>{el.name}</h3>

@@ -54,33 +54,6 @@ const PeoplePage = () => {
   return (
     <div>
       <h2 className='page-title'>People</h2>
-      {/* <input 
-            className="search_input"
-            type = "text" 
-            placeholder = "Search People" 
-            onChange={(e) => setSearchField(e.target.value)}
-            value={searchField} />
-        <button className='search-btn' onClick={handleSearch}><FaSearch /></button>
-
-        <div className='card-container'>
-          {searchField ?
-            <>
-              {filteredList.map((el) => {
-                return <PeopleDetails key={el.name} person={el} />
-              })}
-            </>
-            :
-            <>
-              {data.map((el) => {
-                    return <PeopleDetails key={el.name} person={el} />
-              })}
-
-            {data.length === 80 ? 
-                <p>Your at the end</p>
-              : <button className='load-more-btn' onClick={handleLoadButton}>Load more</button>}
-            </>
-          }
-        </div> */}
 
         <input 
             className="search_input"
@@ -110,7 +83,7 @@ const PeoplePage = () => {
             <>
             {data.map((el, index) => {
                 return (
-                  <Link key={index} to={`/person/${(el.url).match(/[0-9]+/)}`}>
+                  <Link key={index} to={`/person/${(el.url).split("/").slice(-2).join("")}`}>
                       <Card>
                       <div className='card-title'>
                         <h3>{el.name}</h3>
